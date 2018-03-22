@@ -42,11 +42,14 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor, OnDestroy 
     @Input() placeholder: string;
     @Input() selector: number;
     @Input() disabled: boolean;
+    @Input() isActiveCalendar: boolean = true;
     @Output() dateChanged: EventEmitter<IMyDateModel> = new EventEmitter<IMyDateModel>();
     @Output() inputFieldChanged: EventEmitter<IMyInputFieldChanged> = new EventEmitter<IMyInputFieldChanged>();
     @Output() calendarViewChanged: EventEmitter<IMyCalendarViewChanged> = new EventEmitter<IMyCalendarViewChanged>();
     @Output() calendarToggle: EventEmitter<number> = new EventEmitter<number>();
     @Output() inputFocusBlur: EventEmitter<IMyInputFocusBlur> = new EventEmitter<IMyInputFocusBlur>();
+    @Output() onNextMonthClicked: EventEmitter<IMyMonth> = new EventEmitter<IMyMonth>();
+    @Output() onPrevMonthClicked: EventEmitter<IMyMonth> = new EventEmitter<IMyMonth>();
     @ViewChild("selectorEl") selectorEl: ElementRef;
     @ViewChild("inputBoxEl") inputBoxEl: ElementRef;
 
@@ -136,7 +139,11 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor, OnDestroy 
         ariaLabelPrevMonth: <string> "Previous Month",
         ariaLabelNextMonth: <string> "Next Month",
         ariaLabelPrevYear: <string> "Previous Year",
-        ariaLabelNextYear: <string> "Next Year"
+        ariaLabelNextYear: <string> "Next Year",
+        showMonthHeader: <boolean> false,
+        fullMonthLabels: <IMyMonthLabels> {}        ,
+        showPrevBtn: <boolean> false,
+        showNextBtn: <boolean> false
     };
 
     constructor(public elem: ElementRef, private renderer: Renderer, private cdr: ChangeDetectorRef, private localeService: LocaleService, private utilService: UtilService) {
@@ -240,12 +247,12 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor, OnDestroy 
 
     onPrevYears(event: any, year: number): void {
         event.stopPropagation();
-        this.generateYears(Number(year) - 25);
+        this.generateYears(Number(year) - 25);        
     }
 
     onNextYears(event: any, year: number): void {
         event.stopPropagation();
-        this.generateYears(Number(year) + 25);
+        this.generateYears(Number(year) + 25);        
     }
 
     generateYears(year: number): void {
@@ -528,6 +535,11 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor, OnDestroy 
         this.generateCalendar(m, y, true);
     }
 
+    onPrevMonthClick(): void {
+        this.onPrevMonth();
+        this.onPrevMonthClicked.emit(this.visibleMonth);
+    }
+
     onNextMonth(): void {
         // Next month from calendar
         let d: Date = this.getDate(this.visibleMonth.year, this.visibleMonth.monthNbr, 1);
@@ -538,6 +550,11 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor, OnDestroy 
 
         this.visibleMonth = {monthTxt: this.monthText(m), monthNbr: m, year: y};
         this.generateCalendar(m, y, true);
+    }
+
+    onNextMonthClick(): void {
+        this.onNextMonth();
+        this.onNextMonthClicked.emit(this.visibleMonth);
     }
 
     onPrevYear(): void {
@@ -587,7 +604,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor, OnDestroy 
                 this.selectDate(cell.dateObj, CalToggle.CloseByDateSel);
             }
         }
-        this.resetMonthYearSelect();
+        this.resetMonthYearSelect();        
     }
 
     onCellKeyDown(event: any, cell: any) {
@@ -832,10 +849,27 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor, OnDestroy 
         this.nextYearDisabled = y + 1 > this.opts.maxYear || dny;
     }
 
+    /**
+     * Get full month name
+     * @param m 
+     */
+    getFullMonth(m: IMyMonth) : string{
+        //this.opts.fullMonthLabels
+        return this.opts.fullMonthLabels ? this.opts.fullMonthLabels[m.monthNbr] : 'set fullMonthLabels in options to get full month names';
+    }
+
     // Remove listeners or nullify globals on component destroy 
     ngOnDestroy() {
         if (this.globalListener) {
             this.globalListener();
         }
+    }
+
+    goToNextMonth(){
+        this.onNextMonth();
+    }
+
+    goToPrevMonth(){
+        this.onPrevMonth();
     }
 }

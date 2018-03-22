@@ -49,7 +49,7 @@ module.exports = {
 
     entry: {
         app: [
-            'webpack-dev-server/client?http://localhost:5000',
+            'webpack-dev-server/client?http://localhost:5050',
             'sampleapp/main',
             'sampleapp/vendor'
         ]
@@ -85,7 +85,7 @@ module.exports = {
     devServer: {
         contentBase: ['./src', './sampleapp'],
         historyApiFallback: true,
-        port: 5000,
+        port: 5050,
         publicPath: '/',
         stats: {
             cached: true,

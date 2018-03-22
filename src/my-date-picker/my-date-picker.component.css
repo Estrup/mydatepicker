@@ -349,7 +349,9 @@
 .mydp .markcurrday,
 .mydp .markcurrmonth,
 .mydp .markcurryear {
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    background-color: #93cf5d;
+    color: #fff;
 }
 
 .mydp .selectedday .datevalue,
@@ -404,6 +406,11 @@
 .mydp .headertodaybtn,
 .mydp .yearchangebtn {
     color: #000;
+}
+
+.mydp .headermonthtxt-large{
+    text-align: center;
+    font-weight: bold;
 }
 
 .mydp .headertodaybtn {
@@ -566,4 +573,20 @@
 
 .mydp .icon-mydpremove:before {
     content: "\e806";
+}
+
+.mydp .navright{
+    padding-right: 4px;
+    text-align: right;
+    padding-top: 4px;    
+}
+
+.mydp .navleft{
+    /* padding-right: 4px;     */
+    padding-top: 4px;    
+}
+
+.mydp .navleft button,
+.mydp .navright button{
+    font-size: 24px;
 }
