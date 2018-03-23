@@ -8,7 +8,7 @@
 [![npm](https://img.shields.io/npm/dm/mydatepicker.svg)](https://www.npmjs.com/package/mydatepicker)
 
 ## Description
-Highly configurable Angular date picker. Compatible __Angular2+__.
+Highly configurable Angular date picker. Compatible __Angular2+__. Forked from kekeh
 
 Online demo is [here](http://kekeh.github.io/mydatepicker)
 
@@ -19,7 +19,7 @@ attribute directive date picker.
 
 To install this component to an external project, follow the procedure:
 
-1. __npm install mydatepicker --save__
+1. __npm install mydatepicker-headers --save__
 
 2. Add __MyDatePickerModule__ import to your __@NgModule__ like example below
     ```ts
